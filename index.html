@@ -1,0 +1,247 @@
+<!--Custom implementation of google blockly by Protonos-->
+<!--Only intended for use in addon maker-->
+<!-- MODDED_VERSION_1.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blockly</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./blockly/blockly_compressed.js"></script>
+    <script src="./blockly/blocks_compressed.js"></script>
+    <script src="./blockly/javascript_compressed.js"></script>
+    <script src="./blockly/en.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body id="body">
+    <button id="runbtn" onclick="runCode()">EXECUTE</button>
+    <div id="blocklyDiv"></div>
+    <dialog id="customDialog">
+      <input type="text" id="inputField">
+      <button id="okButton">OK</button>
+      <button id="cancelButton">Cancel</button>
+    </dialog>
+    
+  </body>
+  <!--Blockly toolbox-->
+  <xml id="toolbox" style="display: none;">
+    <category name="Logic" colour="#5B80A5">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+      <block type="set_timeout"></block>
+      <block type="clear_interval">
+        <value name="INTERVAL">
+          <shadow type="text">
+            <field name="TEXT">interval</field>
+          </shadow>
+        </value>
+      </block>
+      
+      
+    </category>
+    <category name="Math" colour="#5B67A5">
+      <block type="math_number"></block>
+      <block type="math_arithmetic"></block>
+      <block type="math_single"></block>
+      <block type="math_trig"></block>
+      <block type="math_constant"></block>
+      <block type="math_number_property"></block>
+      <block type="math_round"></block>
+      <block type="math_on_list">
+        <mutation op="SUM"></mutation>
+        <field name="OP">SUM</field>
+      </block>
+      <block type="math_modulo"></block>
+      <block type="math_constrain"></block>
+      <block type="math_random_int"></block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2"></block>
+    </category>
+    <category name="Lists" colour="#745BA5">
+      <block type="lists_create_empty"></block>
+      <block type="lists_create_with"></block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf"></block>
+      <block type="lists_getIndex"></block>
+      <block type="lists_setIndex"></block>
+      <block type="lists_getSublist"></block>
+      <block type="lists_split"></block>
+      <block type="lists_reverse"></block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="Loops" colour="#5BA55B">
+      <block type="controls_repeat"></block>
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <block type="math_number">
+          </block>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <block type="math_number">
+          </block>
+        </value>
+        <value name="TO">
+          <block type="math_number">
+          </block>
+        </value>
+        <value name="BY">
+          <block type="math_number">
+          </block>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="Text" colour="#5BA58C">
+      <block type="text"></block>
+      <block type="text_length"></block>
+      <block type="text_isEmpty"></block>
+      <block type="text_join"></block>
+      <block type="text_append"></block>
+      <block type="text_trim"></block>
+      <block type="text_print"></block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <block type="text"></block>
+        </value>
+      </block>
+      <block type="consolelog"></block>
+      <block type="text_prompt"></block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="text"></block>
+        </value>
+        <value name="FIND">
+          <block type="text"></block>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="text"></block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="text"></block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <block type="text"></block>
+        </value>
+      </block>
+    </category>
+    <category name="Color" colour="#A5745B">
+      <block type="colour_picker">
+        <field name="COLOUR">#ff0000</field>
+      </block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+    <sep></sep>
+    <category name="DOM" colour="#9FA55B">
+      <block type="change_background_color"></block>
+      <block type="set_text_content"></block> 
+      <block type="add_css_class"></block>
+      <block type="show_element"></block>
+      <block type="hide_element"></block>
+      <block type="create_element"></block>
+      <block type="set_attribute"></block>
+      <block type="get_attribute"></block>
+      <block type="remove_attribute"></block>
+      <block type="get_element_by_id"></block>
+      <block type="get_element_by_class"></block>
+      <block type="get_element_by_tag_name"></block>
+      <block type="change_css_value"></block>
+      <block type="get_css_value"></block>
+      <block type="add_element_to_dom"></block>
+      <block type="remove_element"></block>
+      <block type="append_text"></block>
+      <block type="set_html_content"></block>
+      <block type="clone_element"></block>
+      <block type="scroll_to_element"></block>
+
+    </category>
+    <category name="Css" colour="#9FA55B">
+      <block type="css_property">
+        <value name="ELEMENT">
+          <shadow type="text">
+            <field name="TEXT">element</field>
+          </shadow>
+        </value>
+        <field name="PROPERTY">color</field>
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">#000000</field>
+          </shadow>
+        </value>
+      </block>
+      
+    </category>
+    <category name="Events" colour="#9FA55B">
+      <block type="add_event_listener"></block>
+      <block type="remove_event_listener"></block>
+    </category>
+    
+    <sep></sep>
+    <category
+      name="Variables"
+      categorystyle="variable_category"
+      custom="VARIABLE"
+    ></category>
+    <category
+      name="Functions"
+      categorystyle="procedure_category"
+      custom="PROCEDURE"
+    ></category>
+  </xml>
+
+  <script src="blocks-j.js"></script>
+  <script src="./logic.js"></script>
+  <script>
+
+  </script>
+</html>
